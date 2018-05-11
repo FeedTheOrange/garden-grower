@@ -1,0 +1,12 @@
+# modules
+**/node_modules
+
+# build / tests
+build/
+src/setupTests.js
+
+# default created SW
+src/registerServiceWorker.js
+
+# IDE
+.vscode

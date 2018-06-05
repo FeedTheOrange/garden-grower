@@ -1,14 +1,24 @@
 import React, { Fragment } from 'react';
-import Router from '../../init/router';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import universal from 'react-universal-component';
 
-const App = () => (
+const UniversalComponent = universal(({ page }) => import(`../pages/${page}`));
+
+const App = ({ page }) => (
   <Fragment>
-    <header></header>
+    <header />
     <main id="main">
-      <Router />
+      <UniversalComponent page={page} />
     </main>
-    <footer id="footer"></footer>
+    <footer id="footer" />
   </Fragment>
 );
 
-export default App;
+const mapStateToProps = ({ page }) => ({ page });
+
+export default connect(mapStateToProps)(App);
+
+App.propTypes = {
+  page: PropTypes.string.isRequired,
+};

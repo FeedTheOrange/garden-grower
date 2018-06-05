@@ -5,39 +5,28 @@ import { render } from 'react-snapshot';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-// routing
-import createHistory from 'history/createBrowserHistory';
-import { BrowserRouter } from 'react-router-dom';
-import { routerMiddleware } from 'react-router-redux';
-
 // app
 import initStore from './store';
 import App from '../containers/layout/App';
-import styleInit from './styledComponents';
-
-// api (todo make it an import)
-const Api = {};
+import styleInit from './styledcomponents';
+import Api from './api';
 
 // middleware
-const history = createHistory();
-const middleware = [routerMiddleware(history), thunk.withExtraArgument(Api)];
+const middleware = [thunk.withExtraArgument(Api)];
 if (process.env.NODE_ENV !== 'production') {
-  const initDev = require('./dev.js');
-  initDev(middleware);
+  import('./dev.js').then(initDev => initDev.default(middleware));
 }
 
-const store = initStore(middleware);
+const { store } = initStore({});
 
 styleInit();
 
-// todo consider using ConnectedRouter
-export default function init() {
+export default () => {
   render(
-   <Provider store={store}>
-     <BrowserRouter>
-       <App />
-     </BrowserRouter>
-   </Provider>,
-   document.getElementById('root'),
+    <Provider store={store}>
+      <App />
+    </Provider>
+    ,
+    document.getElementById('root'),
   );
-}
+};

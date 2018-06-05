@@ -1,13 +1,19 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import createRouter from './router';
+import reducers from '../reducers';
 
-const combinedReducers = combineReducers({
-  router: routerReducer,
-});
+export default (preLoadedState) => {
+  const {
+    reducer, middleware, enhancer, thunk,
+  } = createRouter;
 
-const initState = {};
+  const composeEnhancers = (...args) => compose(...args);
 
-const configureStore = (middleware = []) =>
-  createStore(combinedReducers, initState, applyMiddleware(...middleware));
+  const rootReducer = combineReducers({ ...reducers, location: reducer });
+  // todo apply middleware from index.jsx page
+  const middlewares = applyMiddleware(middleware);
+  const enhancers = composeEnhancers(enhancer, middlewares);
+  const store = createStore(rootReducer, preLoadedState, enhancers);
 
-export default configureStore;
+  return { store, thunk };
+};

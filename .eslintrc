@@ -11,9 +11,9 @@
         "**/__tests__/**",
         "**/__mocks__/**",
         "**/*.{test,spec}.{js,jsx}",
-        "**/stories/**"
+        "**/stories/**",
         "**/__stories__/**",
-        "**/*.story.{js,jsx}",
+        "**/*.story.{js,jsx}"
       ],
       "optionalDependencies": false
     }],
